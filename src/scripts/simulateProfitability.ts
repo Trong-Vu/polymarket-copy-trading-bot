@@ -82,7 +82,11 @@ interface SimulatedPosition {
 
 const DEFAULT_TRADER_ADDRESS = '0x7c3db723f1d4d8cb9c550095203b686cb11e5c6b';
 const TRADER_ADDRESS = (process.env.SIM_TRADER_ADDRESS || DEFAULT_TRADER_ADDRESS).toLowerCase();
-const STARTING_CAPITAL = 1000; // Симуляция с $1000 начального капитала
+const STARTING_CAPITAL = (() => {
+    const raw = process.env.SIM_STARTING_CAPITAL;
+    const value = raw ? Number(raw) : 1000;
+    return Number.isFinite(value) && value > 0 ? Math.floor(value) : 1000;
+})();
 const HISTORY_DAYS = (() => {
     const raw = process.env.SIM_HISTORY_DAYS;
     const value = raw ? Number(raw) : 7;
